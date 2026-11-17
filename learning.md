@@ -51,6 +51,10 @@ Schema : Standard for describing the structure and rules of JSON data.
         }
     }
 )>
+<# Convert JSON text into a Python Dictionary
+workout = json.loads(json_text)
+print(workout)
+print("Specific workout " + workout["exercise"])>
 
 With the text : { "strict" : True } we instruct that whatever it generates it need to fit this predefined structure.
 "properties": {

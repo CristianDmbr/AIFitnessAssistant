@@ -1,51 +1,65 @@
 import os
 import json
+
 from dotenv import load_dotenv
 from openai import OpenAI
 
-# Load environment variables
 load_dotenv()
 
-# Initialise the OpenAI client
 client = OpenAI(
-    api_key=os.getenv("OPEN_API_KEY")
+    api_key = os.getenv("OPEN_API_KEY")
 )
 
-default_response = client.responses.create(
+schema_response = client.responses.create(
     model = "gpt-5.5",
-    input = "Create me a muscle building workout excerise for a beginner"
-)
-
-print("Default no Schema " + default_response.output_text)
-
-# Send a request to the AI model
-response = client.responses.create(
-    model="gpt-5.5",
-    input="Create me a muscle building workout excerise for a beginner",
+    input = "Make me a 5 workout chest plan for today",
     text = {
         "format" : {
             "type" : "json_schema",
-            "name" : "workout_exercise",
+            "name" : "chest_workout",
             "strict" : True,
             "schema" : {
                 "type" : "object",
                 "properties" : {
-                    "exercise" : {"type" : "string"},
-                    "sets" : {"type" : "integer"},
-                    "reps" : {"type" : "integer"},
-                    "rest_seconds" : {"type":"integer"}
+                    "total_workout_duration" : {"type" : "integer"},
+                    "exercises" : {
+                        "type" : "array",
+                        "items" : {
+                            "type" : "object",
+                            "properties" : {
+                                "exercise" : {"type" : "string"},
+                                "sets" : {"type" : "integer"},
+                                "reps" : {"type" : "integer"},
+                                "rest_time" : {"type" : "integer"},
+                                "intensity" : {"type":"string"}
+                            },
+                            "required" : ["exercise","sets","reps","rest_time","intensity"],
+                            "additionalProperties" : False,
+                        }
+                    }
                 },
-                "required" : ["exercise","sets","reps","rest_seconds"],
+                "required" : ["exercises","total_workout_duration"],
                 "additionalProperties" : False
             }
         }
-    }
+    } 
 )
 
-json_text = response.output_text
-print("Jason Text : " + json_text)
+response = schema_response.output_text
+final = json.loads(response)
+for exercise in final["exercises"]:
+    print(f"Exercise  {exercise['exercise']}")
+    print(f"Sets : {exercise['sets']}")
+    print(f"Reps {exercise['reps']} ")
+    print("-----------------")
 
-# Convert JSON text into a Python Dictionary
-workout = json.loads(json_text)
-print(workout)
-print("Specific workout " + workout["exercise"])
+print("Total exercises " + str(len(final["exercises"])))
+print(f"First exercise {final['exercises'][0]['exercise']}")
+print(f"Rest time of third exercise : {final['exercises'][2]['rest_time']}")
+print(f"Last exercise name {final['exercises'][-1]['exercise']}")
+
+all_exercises = []
+for exercise in final["exercises"]:
+    all_exercises.append(exercise["exercise"])
+print("All Exercieses")
+print(all_exercises)
