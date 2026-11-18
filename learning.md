@@ -81,3 +81,26 @@ Common python exceptions :
 - openai.RateLimitError : Rate limit or usage limit
 - openai.APIStatusError : API HTTP errors
 - json.JSONDecoderError : Invalid JSON returned to Python
+
+# Validating AI responses
+Say we ask for five chest exercises and the output is:
+\{
+    "workout_duration_in_minutes": 60,
+    "exercises": [
+        {"exercise": "Bench Press", "sets": 3, "reps": 10, "intensity": "Moderate", "rest_between_sets": 90},
+        {"exercise": "Incline Press", "sets": 3, "reps": 12, "intensity": "Moderate", "rest_between_sets": 90}
+    ]
+}
+- Yes this is a valid JSON.
+- Yes it matches the JSON Schema.
+- But it DOES NOT satisfy the request for five exercies.
+
+Schema checks the strucutre and data types. Python Validation will check whether the returned information meets the application's rules.
+
+# Three levels of validation:
+1. JSON Schema : Structure and data types e.g. sets must be an integer and exercise must be a string.
+2. Python validation : Application rules e.g. workout must contain exactly 5 exercises.
+3. Business rules : If the content makes sense e.g. reps and rest periods are within the acceptable limits.
+(Valid JSON does not mean valid workout data)
+
+Python Validation can include validation functions.
