@@ -65,3 +65,19 @@ With the text : { "strict" : True } we instruct that whatever it generates it ne
 }
 Output : {'exercise': 'Goblet Squat', 'sets': 3, 'reps': 10, 'rest_seconds': 90}
 And it can we accessed as an object because of the type : "object" <print("Specific workout " + workout["exercise"])>
+
+# Handling API errors
+What happens if :
+- API key is invalid?
+- Connection drops?
+- Insufficient API credits?
+- Sent too many requests?
+- Cannot parse the response?
+
+Common python exceptions :
+- openai.AuthenticationError : Invalid API key
+- openai.APIConnectionError : No Internet or connection Failure
+- openai.APITimeoutError : Request time out
+- openai.RateLimitError : Rate limit or usage limit
+- openai.APIStatusError : API HTTP errors
+- json.JSONDecoderError : Invalid JSON returned to Python
