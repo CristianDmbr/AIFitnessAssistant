@@ -1,6 +1,5 @@
 from django.core import signing
 
-
 class EmailVerificationToken:
 
     SALT = "users.email-verification"
