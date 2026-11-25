@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
+from django.db import transaction
+from .tokens import EmailVerificationToken
+from .emails import send_verification_email
+
 User = get_user_model()
 
 from .models import FitnessProfile
@@ -28,5 +32,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         user.set_unusable_password()
         user.save()
+
+        token = EmailVerificationToken.generate(user)
+
+        transaction.on_commit(
+            lambda: send_verification_email(user, token)
+        )
 
         return user
