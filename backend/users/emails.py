@@ -11,7 +11,7 @@ def send_verification_email(user, token):
     subject = "Verify your email address"
 
     message = f"""
-    Hello {user.username},
+    Hello {user.username}!
 
     Thank you for registering!
 

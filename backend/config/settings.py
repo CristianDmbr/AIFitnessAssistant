@@ -134,6 +134,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # When User model is needed use the users.User model instead since we modified the default module.
+# We do users. since the folder direction with the User model is inside of users. users is the app component.
 AUTH_USER_MODEL = 'users.User'
 
 # Protocols to send email between systems

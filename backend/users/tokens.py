@@ -23,4 +23,4 @@ class EmailVerificationToken:
             return data["user_id"]
 
         except signing.BadSignature:
-            return None
+            return None 
