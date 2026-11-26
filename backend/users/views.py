@@ -10,7 +10,6 @@ from .serializers import RegistrationSerializer
 from .tokens import EmailVerificationToken
 
 
-
 class RegistrationView(APIView):
 
     def post(self,request):
@@ -27,6 +26,7 @@ class RegistrationView(APIView):
                 serializer.errors,
                 status = status.HTTP_400_BAD_REQUEST
             )
+
 
 class VerificationView(APIView):
     
@@ -63,7 +63,11 @@ class VerificationView(APIView):
 
             except User.DoesNotExist:
                 return Response(
-                    {"error" : "User does not exist"},
+                    {
+                        "error" : "User does not exist",
+                        "username" : user.username,
+                        "email" : user.email,
+                        "user_pk" : user.pk
+                    },
                     status = status.HTTP_404_NOT_FOUND
                 )
-                        
